@@ -70,13 +70,13 @@ def scrape(pages, review_link, filename):
             except:
                 pass
 
-    with open(f"DATASET/ELTB/{filename}.csv", "w") as csvfile:
+    with open(f"DATASET/Floss/{filename}.csv", "w") as csvfile:
         csvwriter = csv.writer(csvfile)
         csvwriter.writerow(fields)
         csvwriter.writerows(my_master_list)
 
 
-with open("URLS/eltb.txt", "r") as file:
+with open("URLS/floss.txt", "r") as file:
     for d in file:
         d = d.split()
         pages = min((int(d[0]) + 9) // 10, 22)
