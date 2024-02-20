@@ -41,3 +41,14 @@ def reviewsHtml(url, len_page):
     return soups
 
 html_pages = reviewsHtml(reviews_url, len_page)
+
+
+with open("URLS/sus.txt", "r") as file:
+    for d in file:
+        d = d.split()
+        pages = min((int(d[0]) + 9) // 10, 22)
+        filename = d[1]
+        review_link = d[2][:-1]
+
+        # scrape(pages, review_link, filename)
+        scrape(pages, review_link, filename)
