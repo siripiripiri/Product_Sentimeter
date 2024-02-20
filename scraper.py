@@ -10,15 +10,15 @@ def scrape(product_link):
             print("-1")
             return -1
 
-
-
         html_data = response.text
         soup = BeautifulSoup(html_data, 'html.parser')
         review_box = soup.find_all('div', class_='a-section celwidget')
         # print(review_box)
         for r in review_box:
-            # res = 
-            pass
+            stars = r.find('i', {'data-hook': 'review-star-rating'})
+            stars = stars.find('span', {'class': 'a-icon-alt'}).text.split()[0]
+            print(stars)
+            # pass
 
 
     except:
