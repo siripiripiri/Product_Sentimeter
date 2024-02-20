@@ -57,17 +57,27 @@ def get_reviews(html_data):
     boxes = html_data.select('div[data-hook="review"]')
 
     for r in boxes:
-        stars = r.find('i', {'data-hook': 'review-star-rating'})
-        stars = stars.find('span', {'class': 'a-icon-alt'}).text.split()[0]
-        print(stars)
+        try:
+            stars = r.find('i', {'data-hook': 'review-star-rating'})
+            stars = stars.find('span', {'class': 'a-icon-alt'}).text.split()[0]
+            print(stars)
+        except:
+            stars = ""
     
-        d = r.find('span',{'data-hook':'review-date'}).text
-        d = d.split()[4:]
-        date, month, year = d[0], d[1], d[2]
-        print(date, month, year)
+        try:
+            d = r.find('span',{'data-hook':'review-date'}).text
+            d = d.split()[4:]
+            date, month, year = d[0], d[1], d[2]
+            print(date, month, year)
+        except:
+            month = "January"
+            year = "2024"
 
-        review = r.find('span', {'data-hook': 'review-body'})
-        review_text = review.find('span').text
+        try:
+            review = r.find('span', {'data-hook': 'review-body'})
+            review_text = review.find('span').text
+        except:
+            review_text = ""
         # output = query({
         #     "inputs": review_text,
         # })
@@ -79,14 +89,19 @@ def get_reviews(html_data):
         #         best_score = l['score']
         #         best_label = l['label']
         # print(best_label)
-        output = pipe(review_text)
+        try:
+            output = pipe(review_text)
+            result_label = output[0]['label']
+        except:
+            result_label = "positive"
+            
 
         # create Dictionary with al review data 
         data_dict = {
             'Stars' : stars,
             'Month': month,
             'Year': year,
-            'Sentiment_label': output[0]['label'],
+            'Sentiment_label': result_label,
             'Review_text': review_text
         }
 
@@ -96,7 +111,7 @@ def get_reviews(html_data):
     return data_dicts
 
 
-with open("Urls_new/tb.txt", "r") as file:
+with open("Urls_new/floss_new.txt", "r") as file:
     for d in file:
         d = d.split()
         pages = min((int(d[0]) + 9) // 10, 22)
@@ -112,4 +127,4 @@ with open("Urls_new/tb.txt", "r") as file:
             reviews += review
         
         df_reviews = pd.DataFrame(reviews)
-        df_reviews.to_csv(f"Dataset_new/Toothbrush_new/{filename}.csv", index=False)
+        df_reviews.to_csv(f"Dataset_new/Floss_new/{filename}.csv", index=False)
