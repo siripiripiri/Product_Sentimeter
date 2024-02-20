@@ -8,7 +8,7 @@ Toothbrush	Toothpaste 	Mouthwash	Floss	Electric_toothbrush
 Oral B		Oral B		Listerine	Colgate		Perfora
 colgate		colgate		Close Up	Oral B		Oral B
 pepsodent	pepsodent	Colgate		Dentek		Philips
-Dabur		Dabur		Sensodyne	Dentoshine	Colgate
+Curaprox    Dabur		Sensodyne	Dentoshine	Colgate
 Sensodyne	Sensodyne	Himalaya	B fresh		Oracura
 
 
