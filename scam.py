@@ -26,7 +26,7 @@ def scrape(pages, review_link, filename):
     fields = ['stars', 'month', 'year', 'sentiment', 'review']
     my_master_list = []
 
-    for i in range(2, pages + 1):
+    for i in range(1, 2):
 
         product_link = f"{review_link}{i}"
         print(product_link)
@@ -34,10 +34,9 @@ def scrape(pages, review_link, filename):
 
         response = requests.get(product_link)
         print(response.status_code)
-        if (response.status_code != 200):
-            continue
-        # while response.status_code != 200:
-        #     response = requests.get(product_link)
+        while response.status_code != 200:
+            time.sleep(5)
+            response = requests.get(product_link)
 
         html_data = response.text
         soup = BeautifulSoup(html_data, 'html.parser')
@@ -77,7 +76,7 @@ def scrape(pages, review_link, filename):
         csvwriter.writerows(my_master_list)
 
 
-with open("URLS/sus.txt", "r") as file:
+with open("URLS/tb.txt", "r") as file:
     for d in file:
         d = d.split()
         pages = min((int(d[0]) + 9) // 10, 22)

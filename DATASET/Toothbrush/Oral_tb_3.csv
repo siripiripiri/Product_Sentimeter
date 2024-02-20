@@ -1,0 +1,10 @@
+stars,month,year,sentiment,review
+3.0,February,2024,positive,Lower quality
+1.0,February,2024,negative,The item stopped working after about 3 months
+3.0,January,2024,positive,Good
+4.0,January,2024,positive,Brush is good but there is no more charcoal.
+5.0,January,2024,positive,Good 👍
+3.0,January,2024,positive,Hard bristles
+4.0,January,2024,positive,Just perfect for medium bristles good enough to clean your tooth
+5.0,January,2024,positive,"I recently purchased this toothbrush, and I'm impressed with its design and functionality. The fact that it comes with a cap is a game-changer for me – it keeps the bristles clean and makes it easy to carry in my bag without worrying about hygiene. The toothbrush itself has a comfortable grip, and the bristles are gentle yet effective in cleaning. I appreciate the attention to detail in the design, and the cap is definitely a standout feature for me. If you're looking for a reliable toothbrush that also considers convenience, this is a solid choice!"
+1.0,January,2024,negative,"Very hard brush, feels like iron bristles can not be a toothbrush"
