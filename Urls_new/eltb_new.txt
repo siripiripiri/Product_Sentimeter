@@ -1,0 +1,21 @@
+3851 oralb_el_tb_1 https://www.amazon.in/Oral-Crossaction-Battery-Powered-Toothbrush/product-reviews/B018IE1XSM/
+727 oralb_el_tb_2 https://www.amazon.in/Oral-Vitality-Electric-Rechargeable-Toothbrush/product-reviews/B07JL3W3KG/
+1060 oralb_el_tb_3 https://www.amazon.in/Oral-Vitality-Electric-Rechargeable-Toothbrush/product-reviews/B07JKXSJMX/
+257 oralb_el_tb_4 https://www.amazon.in/Oral-Electric-Toothbrush-pressure-replaceable/product-reviews/B094W9Z82F/
+9454 oralb_el_tb_5 https://www.amazon.in/Oral-Pro-1000-Rechargeable-Black/product-reviews/B01AKGRTUM/
+636 per_eltb_1 https://www.amazon.in/Perfora-Electric-Toothbrush-Vibrating-Bristles/product-reviews/B09ZY6JC21/
+338 per_eltb_2 https://www.amazon.in/Perfora-Electronic-Toothbrush-Technology-Vibrating/product-reviews/B09JVTP3CC/
+39 per_eltb_3 https://www.amazon.in/Perfora-Toothbrush-Toothpaste-Automatic-Moonstone/product-reviews/B0B46H2RS1/
+292 phil_eltb_1 https://www.amazon.in/Toothbrush-Technology-QuadPacer-HX3641-11/product-reviews/B09R1RRR35/
+117 phil_eltb_2 https://www.amazon.in/Toothbrush-Technology-Interdental-14-HX3671/product-reviews/B09R1RC2Y3/
+215 phil_eltb_3 https://www.amazon.in/ProtectiveClean-Toothbrush-Technology-Dual-Intensity-HX6807/product-reviews/B09PC2CMW2/
+517 phil_eltb_4 https://www.amazon.in/Electric-Toothbrush-Recommended-Vibrating-Lightweight/product-reviews/B0BC18BHHM/
+1863 phil_eltb_5 https://www.amazon.in/Philips-ProtectiveClean-Rechargeable-toothbrush-HX6850/product-reviews/B078GVH2VJ/
+95 ora_eltb1_1 https://www.amazon.in/ORACURA-Electric-Rechargeable-Toothbrush-strokes/product-reviews/B09775Q7V1/
+2251 ora_eltb1_2 https://www.amazon.in/ORACURA%C2%AE-Economical-Flosser%C2%AE-Electric-Toothbrush/product-reviews/B09GW6918M/
+10 ora_eltb1_3 https://www.amazon.in/ORACURA%C2%AE-Rechargeable-Toothbrush-Waterproof-Inductive/product-reviews/B0C89YBX4Y/
+437 col_eltb_1 https://www.amazon.in/Colgate-PROCLINICAL-Charcoal-Battery-Toothbrush/product-reviews/B07MWND6QF/
+125 col_eltb_2 https://www.amazon.in/Colgate-PROCLINICAL-Battery-Powered-Toothbrush/product-reviews/B07MWNWZ2F/
+39 col_eltb_3 https://www.amazon.in/Colgate-ProClinical-Rechargeable-Electric-Toothbrush/product-reviews/B08DP37DGT/
+30 col_eltb_4 https://www.amazon.in/Colgate-Charcoal-Battery-Toothbrush-Multicolor/product-reviews/B071LHHV3G/
+
