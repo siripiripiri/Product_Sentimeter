@@ -1,43 +1,37 @@
+import browsercookie
 import requests
 from bs4 import BeautifulSoup
+import csv
 from dotenv import load_dotenv
 import os
-import csv
-import time
 
-# HUGGING FACE
 load_dotenv()
 HF_TOKEN = os.getenv('HF')
 print(HF_TOKEN)
 API_URL = "https://api-inference.huggingface.co/models/lxyuan/distilbert-base-multilingual-cased-sentiments-student"
 headers = {"Authorization": f"Bearer {HF_TOKEN}"}
+
 def query(payload):
 	response = requests.post(API_URL, headers=headers, json=payload)
 	return response.json()
-# output = query({
-# 	"inputs": review_text,
-# })
-# print(output)
+# Get cookies for Chrome browser
+chrome_cookies = browsercookie.chrome()
 
+# Print the cookies
+for cookie in chrome_cookies:
+    print(cookie)
 
-product_link = "https://www.amazon.in/Pepsodent-Germicheck-Toothpaste-150-Pack/product-reviews/B00R1BOIJU/ref=cm_cr_arp_d_viewopt_srt?ie=UTF8&reviewerType=all_reviews&sortBy=recent&pageNumber=1"
-def scrape(pages, review_link, filename):
-
+def scrape(cookies, review_link, filename):
     fields = ['stars', 'month', 'year', 'sentiment', 'review']
     my_master_list = []
 
     for i in range(2, pages + 1):
-
         product_link = f"{review_link}{i}"
         print(product_link)
-        time.sleep(5)
 
-        response = requests.get(product_link)
-        print(response.status_code)
-        if (response.status_code != 200):
-            continue
-        # while response.status_code != 200:
-        #     response = requests.get(product_link)
+        response = requests.get(product_link, cookies=cookies)
+        while response.status_code != 200:
+            response = requests.get(product_link, cookies=cookies)
 
         html_data = response.text
         soup = BeautifulSoup(html_data, 'html.parser')
@@ -77,7 +71,7 @@ def scrape(pages, review_link, filename):
         csvwriter.writerows(my_master_list)
 
 
-with open("URLS/sus.txt", "r") as file:
+with open("URLS/tb.txt", "r") as file:
     for d in file:
         d = d.split()
         pages = min((int(d[0]) + 9) // 10, 22)
@@ -85,5 +79,14 @@ with open("URLS/sus.txt", "r") as file:
         review_link = d[2][:-1]
 
         # scrape(pages, review_link, filename)
-        scrape(pages, review_link, filename)
 
+
+# Example usage
+pages = 2  # replace with the desired number of pages
+filename = 'output'
+review_link = 'https://www.amazon.in/Oral-Health-Care-Soft-Free/product-reviews/B00U7EEARI/ref=cm_cr_getr_d_paging_btm_next_3?ie=UTF8&reviewerType=all_reviews&sortBy=recent&pageNumber='  # replace with the actual review link
+
+# Replace 'your_cookies' with the actual cookies obtained from the previous step
+your_cookies = browsercookie.chrome()
+
+scrape(your_cookies, review_link, filename)
