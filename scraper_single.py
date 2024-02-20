@@ -12,9 +12,13 @@ headers = {"Authorization": f"Bearer {HF_TOKEN}"}
 def query(payload):
 	response = requests.post(API_URL, headers=headers, json=payload)
 	return response.json()
+# output = query({
+# 	"inputs": review_text,
+# })
+# print(output)
+
 
 # product_link = "https://www.amazon.in/Oral-B-Pro-Expert-Premium-Dental-Floss/product-reviews/B00E601GJE/ref=cm_cr_arp_d_viewopt_srt?ie=UTF8&reviewerType=all_reviews&sortBy=recent&pageNumber=2"
-# product_link = "https://www.amazon.in/Oral-B-1-2-3-Fluoride-Toothpaste/product-reviews/B06XYMW1FY/ref=cm_cr_arp_d_viewopt_srt?ie=UTF8&reviewerType=all_reviews&sortBy=recent&pageNumber=1"
 product_link = "https://www.amazon.in/Pepsodent-Germicheck-Toothpaste-150-Pack/product-reviews/B00R1BOIJU/ref=cm_cr_arp_d_viewopt_srt?ie=UTF8&reviewerType=all_reviews&sortBy=recent&pageNumber=1"
 def scrape(product_link):
 
@@ -64,10 +68,7 @@ scrape(product_link)
     
 # review_text = "I earliar used the oral b essential floss and Colgate floss and both of them had plastic string which caused bleeding inside the gums. This one is very soft and is professional in quality and does not injure the gums. This was made in USA and oral b should make the same thing available in India. Excellent quality and must buy. This is what floss should be like. Good minty taste as well. Does not shred."
 
-# output = query({
-# 	"inputs": review_text,
-# })
-# print(output)
+
 
 
 # with file.open
