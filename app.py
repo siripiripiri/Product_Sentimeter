@@ -46,7 +46,7 @@ def get_url_up_to_last_slash(url):
     return url_up_to_last_slash
 
 # Navigation bar
-nav_pages = ["Main Page", "Brand Wars"]
+nav_pages = ["Main Page", "Conversational Analysis", "Brand Wars"]
 selected_page = st.sidebar.selectbox("Navigate to:", nav_pages)
 
 # Main Page
@@ -125,6 +125,10 @@ if selected_page == "Main Page":
 
 
 
+# Page 2
+elif selected_page == "Conversational Analysis":
+    st.title("AI Insights")
+    
     st.header("Ask your CSV 📈")
 
     user_csv = st.file_uploader("Upload your CSV file", type="csv")
@@ -139,12 +143,8 @@ if selected_page == "Main Page":
             response = agent.run(user_question)
             st.write(response)
 
-# Page 1
+
+#Page 2
 elif selected_page == "Brand Wars":
     st.title("Brand Wars")
     st.write("Brands...")
-
-# # Page 2
-# elif selected_page == "Page 2":
-#     st.title("Page 2")
-#     st.write("Content for Page 2 goes here.")
