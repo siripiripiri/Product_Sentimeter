@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 import spacy
 import random
 
@@ -46,3 +47,7 @@ for i in range(7):
     if choice not in display_adjectives:
         display_adjectives.append(choice)
 # print(display_adjectives)
+        
+labels=["Postive","Negative","Neutral"] 
+sizes=[positive_count, negative_count, neutral_count]
+plt.pie(sizes, labels=labels, autopct='%1.1f%%')
