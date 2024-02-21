@@ -154,6 +154,11 @@ if selected_page == "Main Page":
             df_reviews = pd.DataFrame(reviews)
             df_reviews.to_csv("realtime.csv", index=False)
             data = pd.read_csv(file_path)
+
+            downloadable_file = ""
+            for index, row in df_reviews.iterrows():
+                downloadable_file += row
+                downloadable_file += "\n"
         else:
             st.warning("Please enter a valid URL.")
 
@@ -194,6 +199,19 @@ if selected_page == "Main Page":
             choice = random.choice(adjective_list)
             if choice not in display_adjectives:
                 display_adjectives.append(choice)
+<<<<<<< HEAD
+=======
+        # print(display_adjectives)
+        import streamlit as st
+
+        st.download_button(
+            label = "Download CSV",
+            data = "realtime.csv",
+            file_name = "download.csv",
+            mime="text/plain",
+            help='Click here to download the data as a CSV file'
+        )
+>>>>>>> 2c8fb1c438db844ce5d5cd2fba7fc2061add227a
 
         total1, total2, total3, total4 = st.columns(4)
         with total1:
@@ -226,15 +244,51 @@ if selected_page == "Main Page":
         st.markdown('</div>', unsafe_allow_html=True)
 
 
+<<<<<<< HEAD
         labels=["Postive","Negative","Neutral"] 
         sizes=[positive_count, negative_count, neutral_count]
         # plt.pie(sizes, labels=labels, autopct='%1.1f%%')
         # st.pyplot()
+=======
 
+
+
+        total1, total2, total3, total4 = st.columns(4)
+        with total1:
+            st.info('Total Number of Reviews', icon="⭐")
+            st.metric("Overall Reviews", number_of_reviews)
+        with total2:
+            st.info('Average Positivity Rate', icon="😄")
+            st.metric("Positivity Rate", positivity_rate)
+        with total3:
+            st.info('Average Neutrality Rate', icon="😐")
+            st.metric("Neutrality Rate", neutrality_rate)
+        with total4:
+            st.info('Average Negativity Rate', icon="😔")
+            st.metric("Negativity Rate",negativity_rate)
+
+
+        import streamlit as st
+        import matplotlib.pyplot as plt
+>>>>>>> 2c8fb1c438db844ce5d5cd2fba7fc2061add227a
+
+        # Sample data
+        labels = ["Positive", "Negative", "Neutral"]
+        sizes = [positive_count, negative_count, neutral_count]
+
+        # Define custom colors for each segment
+        colors = ['#66c2a5', '#fc8d62', '#8da0cb']  # Replace with your desired color codes
+
+        # Create a figure and axis
         fig, ax = plt.subplots()
-        # ax.set_facecolor('#F0EACB')
-        ax.pie(sizes, labels=labels, autopct='%1.1f%%')
+        fig.patch.set_facecolor('none')
+
+        # Create the pie chart with custom colors
+        ax.pie(sizes, labels=labels, autopct='%1.1f%%', colors=colors)
+
+        # Display the plot in Streamlit
         st.pyplot(fig)
+
 
 
 
