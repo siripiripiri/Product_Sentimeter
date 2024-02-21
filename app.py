@@ -12,6 +12,7 @@ import os
 from bs4 import BeautifulSoup
 from transformers import pipeline
 import matplotlib.pyplot as plt
+from pygwalker.api.streamlit import StreamlitRenderer, init_streamlit_comm
 
 
 pipe = pipeline("text-classification", model="lxyuan/distilbert-base-multilingual-cased-sentiments-student")
@@ -127,7 +128,7 @@ def get_url_up_to_last_slash(url):
     return url_up_to_last_slash
 
 # Navigation bar
-nav_pages = ["Main Page", "Conversational Analysis", "Brand Wars"]
+nav_pages = ["Main Page", "Conversational Analysis","Interactive Dashboard", "Brand Wars"]
 selected_page = st.sidebar.selectbox("Navigate to:", nav_pages)
 
 # Main Page
@@ -193,10 +194,20 @@ if selected_page == "Main Page":
             choice = random.choice(adjective_list)
             if choice not in display_adjectives:
                 display_adjectives.append(choice)
-        # print(display_adjectives)
-        import streamlit as st
 
-
+        total1, total2, total3, total4 = st.columns(4)
+        with total1:
+            st.info('Total Number of Reviews', icon="⭐")
+            st.metric("Overall Reviews", number_of_reviews)
+        with total2:
+            st.info('Average Positivity Rate', icon="😄")
+            st.metric("Positivity Rate", positivity_rate)
+        with total3:
+            st.info('Average Neutrality Rate', icon="😐")
+            st.metric("Neutrality Rate", neutrality_rate)
+        with total4:
+            st.info('Average Negativity Rate', icon="😔")
+            st.metric("Negativity Rate",negativity_rate)
 # Add a rectangle around each outer list element
         st.markdown('<div style="display: flex; flex-wrap: wrap;">', unsafe_allow_html=True)
 
@@ -213,24 +224,6 @@ if selected_page == "Main Page":
 
 # Close the flexbox container
         st.markdown('</div>', unsafe_allow_html=True)
-
-
-
-
-
-        total1, total2, total3, total4 = st.columns(4)
-        with total1:
-            st.info('Total Number of Reviews', icon="⭐")
-            st.metric("Overall Reviews", number_of_reviews)
-        with total2:
-            st.info('Average Positivity Rate', icon="😄")
-            st.metric("Positivity Rate", positivity_rate)
-        with total3:
-            st.info('Average Neutrality Rate', icon="😐")
-            st.metric("Neutrality Rate", neutrality_rate)
-        with total4:
-            st.info('Average Negativity Rate', icon="😔")
-            st.metric("Negativity Rate",negativity_rate)
 
 
         labels=["Postive","Negative","Neutral"] 
@@ -268,3 +261,20 @@ elif selected_page == "Conversational Analysis":
 elif selected_page == "Brand Wars":
     st.title("Brand Wars")
     st.write("Brands...")
+
+
+elif selected_page == "Interactive Dashboard":
+    st.title("Interactive Dashboard")
+    st.title("Use Pygwalker In Streamlit")
+ 
+    # Get an instance of pygwalker's renderer. You should cache this instance to effectively prevent the growth of in-process memory.
+    @st.cache_resource
+    def get_pyg_renderer() -> "StreamlitRenderer":
+        df = pd.read_csv("realtime.csv")
+        # When you need to publish your app to the public, you should set the debug parameter to False to prevent other users from writing to your chart configuration file.
+        return StreamlitRenderer(df, spec="./gw_config.json", debug=False)
+    
+    renderer = get_pyg_renderer()
+    
+    # Render your data exploration interface. Developers can use it to build charts by drag and drop.
+    renderer.render_explore()
