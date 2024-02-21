@@ -37,7 +37,7 @@ for index, row in df.iterrows():
 
 
 sentiment_score = (positive_count + neutral_count - negative_count) / (positive_count + negative_count + neutral_count)
-positivity_rate = (positive_count + neutral_count - negative_count) / (positive_count + negative_count + neutral_count)
+positivity_rate = (positive_count + neutral_count) / (positive_count + negative_count + neutral_count)
 number_of_reviews = df.shape[0]
 
 display_adjectives = []
