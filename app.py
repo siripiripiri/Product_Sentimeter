@@ -11,6 +11,7 @@ import requests
 import os
 from bs4 import BeautifulSoup
 from transformers import pipeline
+import matplotlib.pyplot as plt
 
 
 pipe = pipeline("text-classification", model="lxyuan/distilbert-base-multilingual-cased-sentiments-student")
@@ -208,8 +209,15 @@ if selected_page == "Main Page":
             st.metric("Negativity Rate",negativity_rate)
 
 
+        labels=["Postive","Negative","Neutral"] 
+        sizes=[positive_count, negative_count, neutral_count]
+        # plt.pie(sizes, labels=labels, autopct='%1.1f%%')
+        # st.pyplot()
 
-
+        fig, ax = plt.subplots()
+        # ax.set_facecolor('#F0EACB')
+        ax.pie(sizes, labels=labels, autopct='%1.1f%%')
+        st.pyplot(fig)
 
 
 
