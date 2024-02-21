@@ -7,8 +7,88 @@ load_dotenv()
 import pandas as pd
 import spacy
 import random
+import requests
+import os
+from bs4 import BeautifulSoup
+from transformers import pipeline
 
+
+pipe = pipeline("text-classification", model="lxyuan/distilbert-base-multilingual-cased-sentiments-student")
 nlp = spacy.load('en_core_web_sm',disable=['ner','textcat'])
+
+headers = {
+    'authority': 'www.amazon.com',
+    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+    'accept-language': 'en-US,en;q=0.9,bn;q=0.8',
+    'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="102", "Google Chrome";v="102"',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36'
+}
+
+def get_html_pages(url, len_page):
+    soups = []
+
+    for page_no in range(1, len_page + 1):
+        params = {
+            'ie': 'UTF8',
+            'reviewerType': 'all_reviews',
+            'filterByStar': 'critical',
+            'pageNumber': page_no,
+        }
+        
+        response = requests.get(url, headers=headers, params=params)
+        soup = BeautifulSoup(response.text, 'lxml')
+        soups.append(soup)
+
+    return soups
+
+def get_reviews(html_data):
+    data_dicts = []
+    boxes = html_data.select('div[data-hook="review"]')
+
+    for r in boxes:
+        try:
+            stars = r.find('i', {'data-hook': 'review-star-rating'})
+            stars = stars.find('span', {'class': 'a-icon-alt'}).text.split()[0]
+            # print(stars)
+        except:
+            stars = ""
+    
+        try:
+            d = r.find('span',{'data-hook':'review-date'}).text
+            d = d.split()[4:]
+            date, month, year = d[0], d[1], d[2]
+            # print(date, month, year)
+        except:
+            month = "January"
+            year = "2024"
+
+        try:
+            review = r.find('span', {'data-hook': 'review-body'})
+            review_text = review.find('span').text
+        except:
+            review_text = ""
+        try:
+            output = pipe(review_text)
+            result_label = output[0]['label']
+        except:
+            result_label = "positive"
+            
+
+        # create Dictionary with al review data 
+        data_dict = {
+            'Stars' : stars,
+            'Month': month,
+            'Year': year,
+            'Sentiment_label': result_label,
+            'Review_text': review_text
+        }
+
+        # Add Dictionary in master empty List
+        data_dicts.append(data_dict)
+    
+    return data_dicts
+
+
 st.set_page_config(page_title="SentiMeter📈")
 
 # CSS styles
@@ -56,14 +136,22 @@ if selected_page == "Main Page":
 
     # User input for the URL
     url_input = st.text_input("Enter the URL:")
-    file_path ='Dataset_new/Eltb_new/oralb_el_tb_3.csv'
+    # file_path ='Dataset_new/Eltb_new/oralb_el_tb_3.csv'
+    file_path = 'realtime.csv'
 
-    data = pd.read_csv(file_path)
     # Convert the URL and display the result
     if st.button("Fetch!"):
         if url_input:
             result_url = get_url_up_to_last_slash(url_input)+"/"
             st.success(f"The converted URL is: {result_url}")
+            html_pages = get_html_pages(result_url, 10)
+            reviews = []
+            for html_data in html_pages:
+                review = get_reviews(html_data)
+                reviews += review
+            df_reviews = pd.DataFrame(reviews)
+            df_reviews.to_csv("realtime.csv", index=False)
+            data = pd.read_csv(file_path)
         else:
             st.warning("Please enter a valid URL.")
 
