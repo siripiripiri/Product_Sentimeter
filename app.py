@@ -5,7 +5,10 @@ from langchain.llms import OpenAI
 from dotenv import load_dotenv
 load_dotenv()
 import pandas as pd
+import spacy
+import random
 
+nlp = spacy.load('en_core_web_sm',disable=['ner','textcat'])
 st.set_page_config(page_title="SentiMeter📈")
 
 # CSS styles
@@ -53,7 +56,7 @@ if selected_page == "Main Page":
 
     # User input for the URL
     url_input = st.text_input("Enter the URL:")
-    file_path ='Dataset_new/Eltb_new/col_eltb_1.csv'
+    file_path ='Dataset_new/Eltb_new/oralb_el_tb_3.csv'
 
     data = pd.read_csv(file_path)
     # Convert the URL and display the result
@@ -64,20 +67,57 @@ if selected_page == "Main Page":
         else:
             st.warning("Please enter a valid URL.")
 
+        positive = ""
+        positive_count = 0
+        negative = ""
+        negative_count = 0
+        neutral_count = 0
+        adjective_list = []
+
+        for index, row in data.iterrows():
+            if str(row['Sentiment_label']) == 'positive':
+                positive_count += 1
+                if positive_count <= 20:
+                    positive += str(row['Review_text'])
+            elif str(row['Sentiment_label']) == 'negative':
+                negative_count += 1
+                if negative_count <= 20:
+                    negative += str(row['Review_text'])
+            else:
+                neutral_count += 1
+            # adjective
+            doc = nlp(str(row['Review_text']))
+            for token in doc:
+                if token.pos_ == "ADJ" and [token.text.lower(), row['Sentiment_label']] not in adjective_list:
+                    adjective_list.append([token.text.lower(), row['Sentiment_label']])
         
+        sentiment_score = (positive_count + neutral_count - negative_count) / (positive_count + negative_count + neutral_count)
+        positivity_rate = (positive_count + neutral_count) / (positive_count + negative_count + neutral_count)
+        number_of_reviews = data.shape[0]
+        neutrality_rate = (neutral_count/(positive_count + negative_count + neutral_count))
+        negativity_rate = (negative_count/(positive_count + negative_count + neutral_count))
+
+
+
+        display_adjectives = []
+        for i in range(7):
+            choice = random.choice(adjective_list)
+            if choice not in display_adjectives:
+                display_adjectives.append(choice)
+        # print(display_adjectives)
         total1, total2, total3, total4 = st.columns(4)
         with total1:
             st.info('Total Number of Reviews', icon="⭐")
-            st.metric("Overall Reviews", f"{data.shape()[0]:,.0f}")
+            st.metric("Overall Reviews", number_of_reviews)
         with total2:
-            st.info('Positivity Rate', icon="😄")
-            st.metric("Positivity Rate", f"{positivity_rate:,.0f}")
+            st.info('Average Positivity Rate', icon="😄")
+            st.metric("Positivity Rate", positivity_rate)
         with total3:
-            st.info('Neutrality Rate', icon="😐")
-            st.metric("Neutrality Rate", f"{neutrality_rate:,.0f}")
+            st.info('Average Neutrality Rate', icon="😐")
+            st.metric("Neutrality Rate", neutrality_rate)
         with total4:
-            st.info('Negativity Rate', icon="😔")
-            st.metric("Negativity Rate", f"{negativity_rate:,.0f}")
+            st.info('Average Negativity Rate', icon="😔")
+            st.metric("Negativity Rate",negativity_rate)
 
 
 
