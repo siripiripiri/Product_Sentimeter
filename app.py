@@ -3,6 +3,7 @@ from urllib.parse import urlparse, urlunparse
 from langchain_experimental.agents.agent_toolkits import create_csv_agent
 from langchain.llms import OpenAI
 from dotenv import load_dotenv
+import altair as alt
 load_dotenv()
 import pandas as pd
 import spacy
@@ -20,7 +21,7 @@ nlp = spacy.load('en_core_web_sm',disable=['ner','textcat'])
 
 headers = {
     'authority': 'www.amazon.com',
-    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,/;q=0.8,application/signed-exchange;v=b3;q=0.9',
     'accept-language': 'en-US,en;q=0.9,bn;q=0.8',
     'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="102", "Google Chrome";v="102"',
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36'
@@ -91,7 +92,9 @@ def get_reviews(html_data):
     return data_dicts
 
 
-st.set_page_config(page_title="SentiMeter📈")
+st.set_page_config( page_icon=":cookie:", page_title="Senti-Meter📈",layout="wide")
+# Load the dataset)
+
 
 # CSS styles
 st.markdown(
@@ -133,8 +136,8 @@ selected_page = st.sidebar.selectbox("Navigate to:", nav_pages)
 
 # Main Page
 if selected_page == "Main Page":
-    st.title(":trophy: Senti-Meter :rocket:")
-    st.write("Your perfect Review Analyst")
+    st.title("📈 Senti-Meter :rocket:")
+    st.write("Your Virtual Product Analyst")
 
     # User input for the URL
     url_input = st.text_input("Enter the URL:")
@@ -161,6 +164,14 @@ if selected_page == "Main Page":
                 downloadable_file += "\n"
         else:
             st.warning("Please enter a valid URL.")
+
+        st.download_button(
+            "Download generated file",
+            data = "realtime.csv",
+            file_name= "download.csv",
+            mime = "text/csv",
+            help = "Click here to download a CSV file"
+        )
 
         positive = ""
         positive_count = 0
@@ -199,95 +210,68 @@ if selected_page == "Main Page":
             choice = random.choice(adjective_list)
             if choice not in display_adjectives:
                 display_adjectives.append(choice)
-<<<<<<< HEAD
-=======
-        # print(display_adjectives)
-        import streamlit as st
-
-        st.download_button(
-            label = "Download CSV",
-            data = "realtime.csv",
-            file_name = "download.csv",
-            mime="text/plain",
-            help='Click here to download the data as a CSV file'
-        )
->>>>>>> 2c8fb1c438db844ce5d5cd2fba7fc2061add227a
 
         total1, total2, total3, total4 = st.columns(4)
         with total1:
             st.info('Total Number of Reviews', icon="⭐")
-            st.metric("Overall Reviews", number_of_reviews)
+            st.metric("Overall Reviews", round(number_of_reviews,2))
         with total2:
             st.info('Average Positivity Rate', icon="😄")
-            st.metric("Positivity Rate", positivity_rate)
+            st.metric("Positivity Rate", round(positivity_rate,2))
         with total3:
             st.info('Average Neutrality Rate', icon="😐")
-            st.metric("Neutrality Rate", neutrality_rate)
+            st.metric("Neutrality Rate", round(neutrality_rate,2))
         with total4:
             st.info('Average Negativity Rate', icon="😔")
-            st.metric("Negativity Rate",negativity_rate)
+            st.metric("Negativity Rate",round(negativity_rate,2))
 # Add a rectangle around each outer list element
         st.markdown('<div style="display: flex; flex-wrap: wrap;">', unsafe_allow_html=True)
 
 # Add a rectangle around each outer list element with specific background colors
         for aspect, sentiment in display_adjectives:
             if sentiment == "positive":
-                bg_color = "#90fa7f"
+                bg_color = "#3d7eba"
             elif sentiment == "negative":
                 bg_color = "#fa897f"
             else:
                 bg_color = "#858282"
             
-            st.markdown(f'<div style="border: 2px solid #e2cbcb; border-radius:1rem; padding: 10px; margin: 10px;">{aspect}<span style="background-color: {bg_color}; padding-left:8px; border-radius: 0.7rem; padding:5px; font-size:16px">{sentiment}</span></div>', unsafe_allow_html=True)
-
-# Close the flexbox container
+            st.markdown(f'<div style="border: 2px solid #e2cbcb; border-radius:1rem; padding: 10px; margin: 10px;">{aspect}<span style="background-color: {bg_color}; color:#FFFFFF;margin-left:10px; border-radius: 0.7rem; padding:5px; font-size:16px">{sentiment}</span></div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
+        col11, col12 = st.columns(2)
 
-<<<<<<< HEAD
-        labels=["Postive","Negative","Neutral"] 
-        sizes=[positive_count, negative_count, neutral_count]
-        # plt.pie(sizes, labels=labels, autopct='%1.1f%%')
-        # st.pyplot()
-=======
-
-
-
-        total1, total2, total3, total4 = st.columns(4)
-        with total1:
-            st.info('Total Number of Reviews', icon="⭐")
-            st.metric("Overall Reviews", number_of_reviews)
-        with total2:
-            st.info('Average Positivity Rate', icon="😄")
-            st.metric("Positivity Rate", positivity_rate)
-        with total3:
-            st.info('Average Neutrality Rate', icon="😐")
-            st.metric("Neutrality Rate", neutrality_rate)
-        with total4:
-            st.info('Average Negativity Rate', icon="😔")
-            st.metric("Negativity Rate",negativity_rate)
+        with col11:
+            sum = 0.0
+            st.write("Average Ratings\n")
+            for i in data['Stars']:
+                sum = sum+i
+                
+            avg = sum/len(data['Stars'])
+            st.write(f'{avg} Stars')
 
 
-        import streamlit as st
-        import matplotlib.pyplot as plt
->>>>>>> 2c8fb1c438db844ce5d5cd2fba7fc2061add227a
 
-        # Sample data
+
+
+
+
+
         labels = ["Positive", "Negative", "Neutral"]
+        colors = ['#3d7eba', '#fa897f', '#858282'] 
         sizes = [positive_count, negative_count, neutral_count]
+        with col12:
+            # Create the pie chart with custom colors
+            fig, ax = plt.subplots()
+            ax.pie(sizes, labels=labels, autopct='%1.1f%%', colors=colors)
+            ax.set_aspect('equal')
+            fig.patch.set_facecolor('none')  # Equal aspect ratio ensures the pie chart is circular
 
-        # Define custom colors for each segment
-        colors = ['#66c2a5', '#fc8d62', '#8da0cb']  # Replace with your desired color codes
+            # Display the plot in Streamlit
+            st.pyplot(fig)
+            labels=["Postive","Negative","Neutral"] 
+            sizes=[positive_count, negative_count, neutral_count]
 
-        # Create a figure and axis
-        fig, ax = plt.subplots()
-        fig.patch.set_facecolor('none')
-
-        # Create the pie chart with custom colors
-        ax.pie(sizes, labels=labels, autopct='%1.1f%%', colors=colors)
-
-        # Display the plot in Streamlit
-        st.pyplot(fig)
 
 
 
@@ -314,12 +298,10 @@ elif selected_page == "Conversational Analysis":
 #Page 2
 elif selected_page == "Brand Wars":
     st.title("Brand Wars")
-    st.write("Brands...")
 
 
 elif selected_page == "Interactive Dashboard":
     st.title("Interactive Dashboard")
-    st.title("Use Pygwalker In Streamlit")
  
     # Get an instance of pygwalker's renderer. You should cache this instance to effectively prevent the growth of in-process memory.
     @st.cache_resource
@@ -332,3 +314,5 @@ elif selected_page == "Interactive Dashboard":
     
     # Render your data exploration interface. Developers can use it to build charts by drag and drop.
     renderer.render_explore()
+
+    
