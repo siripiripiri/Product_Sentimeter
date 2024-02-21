@@ -39,6 +39,7 @@ with open(csvfilepath, "r") as csvfile:
                     aspect_freq[aspect_triplet[0]] = [1, 0, 0]
                 else:
                     aspect_freq[aspect_triplet[0]][0] += 1
+                    
                 if senti_label == 'positive':
                     aspect_freq[aspect_triplet[0]][1] += 1
                 elif senti_label == 'negative':
