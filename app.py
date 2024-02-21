@@ -92,7 +92,7 @@ if selected_page == "Main Page":
                     adjective_list.append([token.text.lower(), row['Sentiment_label']])
         
         sentiment_score = (positive_count + neutral_count - negative_count) / (positive_count + negative_count + neutral_count)
-        positivity_rate = (positive_count + neutral_count) / (positive_count + negative_count + neutral_count)
+        positivity_rate = (positive_count) / (positive_count + negative_count + neutral_count)
         number_of_reviews = data.shape[0]
         neutrality_rate = (neutral_count/(positive_count + negative_count + neutral_count))
         negativity_rate = (negative_count/(positive_count + negative_count + neutral_count))
@@ -105,6 +105,30 @@ if selected_page == "Main Page":
             if choice not in display_adjectives:
                 display_adjectives.append(choice)
         # print(display_adjectives)
+        import streamlit as st
+
+
+# Add a rectangle around each outer list element
+        st.markdown('<div style="display: flex; flex-wrap: wrap;">', unsafe_allow_html=True)
+
+# Add a rectangle around each outer list element with specific background colors
+        for aspect, sentiment in display_adjectives:
+            if sentiment == "positive":
+                bg_color = "#90fa7f"
+            elif sentiment == "negative":
+                bg_color = "#fa897f"
+            else:
+                bg_color = "#858282"
+            
+            st.markdown(f'<div style="border: 2px solid #e2cbcb; border-radius:1rem; padding: 10px; margin: 10px;">{aspect}<span style="background-color: {bg_color}; padding-left:8px; border-radius: 0.7rem; padding:5px; font-size:16px">{sentiment}</span></div>', unsafe_allow_html=True)
+
+# Close the flexbox container
+        st.markdown('</div>', unsafe_allow_html=True)
+
+
+
+
+
         total1, total2, total3, total4 = st.columns(4)
         with total1:
             st.info('Total Number of Reviews', icon="⭐")
