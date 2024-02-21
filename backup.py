@@ -20,7 +20,7 @@ nlp = spacy.load('en_core_web_sm',disable=['ner','textcat'])
 
 headers = {
     'authority': 'www.amazon.com',
-    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,/;q=0.8,application/signed-exchange;v=b3;q=0.9',
+    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
     'accept-language': 'en-US,en;q=0.9,bn;q=0.8',
     'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="102", "Google Chrome";v="102"',
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36'
@@ -91,9 +91,7 @@ def get_reviews(html_data):
     return data_dicts
 
 
-st.set_page_config( page_icon=":cookie:", page_title="Senti-Meter📈",layout="wide")
-# Load the dataset)
-
+st.set_page_config(page_title="SentiMeter📈")
 
 # CSS styles
 st.markdown(
@@ -213,29 +211,29 @@ if selected_page == "Main Page":
         total1, total2, total3, total4 = st.columns(4)
         with total1:
             st.info('Total Number of Reviews', icon="⭐")
-            st.metric("Overall Reviews", round(number_of_reviews,2))
+            st.metric("Overall Reviews", number_of_reviews)
         with total2:
             st.info('Average Positivity Rate', icon="😄")
-            st.metric("Positivity Rate", round(positivity_rate,2))
+            st.metric("Positivity Rate", positivity_rate)
         with total3:
             st.info('Average Neutrality Rate', icon="😐")
-            st.metric("Neutrality Rate", round(neutrality_rate,2))
+            st.metric("Neutrality Rate", neutrality_rate)
         with total4:
             st.info('Average Negativity Rate', icon="😔")
-            st.metric("Negativity Rate",round(negativity_rate,2))
+            st.metric("Negativity Rate",negativity_rate)
 # Add a rectangle around each outer list element
         st.markdown('<div style="display: flex; flex-wrap: wrap;">', unsafe_allow_html=True)
 
 # Add a rectangle around each outer list element with specific background colors
         for aspect, sentiment in display_adjectives:
             if sentiment == "positive":
-                bg_color = "#3d7eba"
+                bg_color = "#90fa7f"
             elif sentiment == "negative":
                 bg_color = "#fa897f"
             else:
                 bg_color = "#858282"
             
-            st.markdown(f'<div style="border: 2px solid #e2cbcb; border-radius:1rem; padding: 10px; margin: 10px;">{aspect}<span style="background-color: {bg_color}; color:#FFFFFF;margin-left:10px; border-radius: 0.7rem; padding:5px; font-size:16px">{sentiment}</span></div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="border: 2px solid #e2cbcb; border-radius:1rem; padding: 10px; margin: 10px;">{aspect}<span style="background-color: {bg_color}; padding-left:8px; border-radius: 0.7rem; padding:5px; font-size:16px">{sentiment}</span></div>', unsafe_allow_html=True)
 
 # Close the flexbox container
         st.markdown('</div>', unsafe_allow_html=True)
@@ -251,7 +249,7 @@ if selected_page == "Main Page":
         sizes = [positive_count, negative_count, neutral_count]
 
         # Define custom colors for each segment
-        colors = ['#3d7eba', '#fa897f', '#858282']  # Replace with your desired color codes
+        colors = ['#66c2a5', '#fc8d62', '#8da0cb']  # Replace with your desired color codes
 
         # Create a figure and axis
         fig, ax = plt.subplots()
@@ -288,10 +286,12 @@ elif selected_page == "Conversational Analysis":
 #Page 2
 elif selected_page == "Brand Wars":
     st.title("Brand Wars")
+    st.write("Brands...")
 
 
 elif selected_page == "Interactive Dashboard":
     st.title("Interactive Dashboard")
+    st.title("Use Pygwalker In Streamlit")
  
     # Get an instance of pygwalker's renderer. You should cache this instance to effectively prevent the growth of in-process memory.
     @st.cache_resource
@@ -304,5 +304,3 @@ elif selected_page == "Interactive Dashboard":
     
     # Render your data exploration interface. Developers can use it to build charts by drag and drop.
     renderer.render_explore()
-
-    
